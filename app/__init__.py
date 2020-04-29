@@ -20,9 +20,3 @@ def create_app():
         from . import routes
 
         return app
-
-
-# Old lines
-# app.config['DEBUG'] = True
-# app.conf['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/kkouludb'
-# db = SQLAlchemy(app)
