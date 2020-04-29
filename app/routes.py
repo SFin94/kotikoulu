@@ -19,4 +19,4 @@ def offer():
     form = OfferForm()
     if form.validate_on_submit():
         return redirect(url_for('kiitos'))
-    return render_template('form_offer.html', form=form)
+    return render_template('form_offer.html', form=form, title='Volunteer form')
