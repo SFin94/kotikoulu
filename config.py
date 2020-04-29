@@ -16,3 +16,4 @@ class Config:
 
     # Database Config
     SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/kkouludb'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
