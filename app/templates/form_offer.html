@@ -1,3 +1,4 @@
+{% from "_macros.html" import error_handle %}
 {% extends 'layout.html' %}
 
 {% block styles %}
@@ -11,48 +12,37 @@
     <form method="POST" action="/offerform">
         {{ form.csrf_token }}
         <div class="form-field">{{ form.name.label }} {{ form.name(size=20) }} 
-            {% if form.name.errors %}
-                <ul class="errors">
-                    {% for error in form.name.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
+            {% if form.email.errors %}
+                {{ error_handle(form.name) }}
             {% endif %}
         </div>
         <div class="form-field">{{ form.email.label }} {% if form.email.flags.required %}*{% endif %} {{ form.email }}
             {% if form.email.errors %}
-                <ul class="errors">
-                    {% for error in form.email.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
+                {{ error_handle(form.email) }}
             {% endif %}
         </div>
         <div class="form-field">{{ form.pronoun.label }} {{ form.pronoun }}
-            {% if form.country.errors %}
-                <ul class="errors">
-                    {% for error in form.country.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
+            {% if form.pronoun.errors %}
+                {{ error_handle(form.pronoun) }}
             {% endif %}
         </div>
         <div class="form-field">{{ form.country.label }} {{ form.country }}
             {% if form.country.errors %}
-                <ul class="errors">
-                    {% for error in form.country.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
+                {{ error_handle(form.country) }}
             {% endif %}
         </div>
         {% for field in form %}
+            {% if field.type == 'MultiCheckboxField' %}
+                <div>
+                    {{ field.label }} {{ field }}
+                </div>
+            {% endif %}
             {% if field.type == 'BooleanField' %}
-                <div class="checkbox">
+                <div>
                     <label>
                         {{ field.label }}
-                        {{ field }}
                     </label>
+                    {{ field }}
                 </div>
             {% endif %}
         {% endfor %}
