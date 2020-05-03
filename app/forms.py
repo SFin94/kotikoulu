@@ -5,6 +5,7 @@
 from flask_wtf import FlaskForm, RecaptchaField
 from wtforms import StringField, TextAreaField, SubmitField, RadioField, BooleanField, SelectField, SelectMultipleField, widgets, Form, FormField
 from wtforms.validators import DataRequired, Email, InputRequired 
+import pycountry
 
 
 class TestForm(FlaskForm):
@@ -30,7 +31,9 @@ class UserDetailsForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     email = StringField('Contact email', validators=[Email(message=('Not a valid email address.')), DataRequired()])
     pronoun = SelectField('Pronoun', choices=[('she', 'she/her'), ('he', 'he/him'), ('they', 'they/them'), ('per', 'per/per'), ('ae', 'ae/aer'), ('ey', 'ey/em'), ('ve', 've/ver'), ('xe', 'xe/xem'), ('zie', 'zie/hir')], validators=[InputRequired()])
-    country = StringField('Country of Location')
+    
+    country_choices = [(country.alpha_2, country.name) for country in pycountry.countries]
+    country = SelectField('Country of Location', choices=country_choices)
 
     # Consent options
     agree_data = BooleanField('By checking this box I agree to kotikoulu holding the data submitted for the purpose intended. I understand I can ask for my data to be removed at any time by emailing kotikoulu.', validators=[InputRequired()])
