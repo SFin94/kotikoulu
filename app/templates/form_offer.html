@@ -31,6 +31,27 @@
                 {{ error_handle(form.country) }}
             {% endif %}
         </div>
+        <div class="form-field">{{ form.teaching.label }}
+            {% for option in form.teaching %}
+            <tr>
+                <td>{{ option.label }}</td> 
+                <td>{{ option }}</td>
+            </tr>
+            {% endfor %}
+        </div>
+        {% if form.teaching.value == '1' %}
+            <div class="form-field">{{ form.teaching_exp.label }} {{ form.teaching_exp }} 
+            {% if form.email.errors %}
+                {{ error_handle(form.name) }}
+            {% endif %}
+            </div>
+        {% endif %}
+        <div class="field-form">
+            {% for key, value in subjects.items() %}
+                {{ value }}
+                {{ form | attr(key)() }}
+            {% endfor %}
+        </div>
         {% for field in form %}
             {% if field.type == 'MultiCheckboxField' %}
                 <div>
