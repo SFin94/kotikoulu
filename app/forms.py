@@ -32,7 +32,9 @@ class UserDetailsForm(FlaskForm):
     email = StringField('Contact email', validators=[Email(message=('Not a valid email address.')), DataRequired()])
     pronoun = SelectField('Pronoun', choices=[('she', 'she/her'), ('he', 'he/him'), ('they', 'they/them'), ('per', 'per/per'), ('ae', 'ae/aer'), ('ey', 'ey/em'), ('ve', 've/ver'), ('xe', 'xe/xem'), ('zie', 'zie/hir')], validators=[InputRequired()])
     
-    country_choices = [(country.alpha_2, country.name) for country in pycountry.countries]
+    country_initial = [(country.name, country.name) for country in pycountry.countries]
+    country_switch = sorted([ci[::-1] for ci in country_initial])
+    country_choices = [cs[::-1] for cs in country_switch]
     country = SelectField('Country of Location', choices=country_choices)
 
     # Consent options
@@ -52,8 +54,8 @@ class OfferForm(UserDetailsForm):
     teaching_help = RadioField('Would you be interested in helping other volunteers?', choices=[('1', 'Yes'), ('0', 'No')], validators=[DataRequired()])
 
     # Volunteering options
-    help_type = MultiCheckboxField('Commnication style', choices=[('video', 'Video calls'), ('resources', 'Making/providing resources')])
-    help_freq = MultiCheckboxField('Frequency', choices=[('one', 'One-off'), ('many', 'Regular')])
+    help_type = MultiCheckboxField('Commnication style', choices=[('video', 'Video calls'), ('resources', 'Making/providing resources')], validators=[DataRequired()])
+    help_freq = MultiCheckboxField('Frequency', choices=[('one', 'One-off'), ('many', 'Regular')], validators=[DataRequired()])
     other_subjects = StringField('Pop your languages and other subjects here.')
     enrichment = StringField('If you have a particular project that you\'d love to talk about, or anything else to add, pop it here.', widget=widgets.TextArea())
 
