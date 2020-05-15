@@ -1,8 +1,8 @@
 form {
     background: white;
-    width: 100%;
+    width: 80%;
   }
-  
+
   .form-field {
     position: relative;
   }
@@ -24,7 +24,7 @@ form {
   
   .formwrapper {
     background: white;
-    width: 350px;
+    width: 800px;
     box-shadow: 0 0 5px rgba(65, 67, 144, 0.1);
     padding: 50px;
   }

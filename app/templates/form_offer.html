@@ -1,80 +1,85 @@
 {% from "_macros.html" import error_handle %}
-{% extends 'layout.html' %}
-
-{% block styles %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='form_offer.css') }}" rel="stylesheet" type="text/css">
-{% endblock %}
-
+{% extends 'base.html' %}
 
 {% block content %}
-<div class="formwrapper">
-    <h2 class="title">Volunteer Form</h2>
+<h2 class="title">Volunteer Form</h2>
     <form method="POST" action="/offerform">
         {{ form.csrf_token }}
-        <div class="form-field">{{ form.name.label }} {{ form.name(size=20) }} 
+        <div class="form-group">
+            {{ form.name.label }} {{ form.name(size=20,class="form-control") }} 
             {% if form.name.errors %}
                 {{ error_handle(form.name) }}
             {% endif %}
         </div>
-        <div class="form-field">{{ form.email.label }} {% if form.email.flags.required %}*{% endif %} {{ form.email }}
+        <div class="form-group">
+            {{ form.email.label }} {{ form.email(class="form-control") }}
             {% if form.email.errors %}
                 {{ error_handle(form.email) }}
             {% endif %}
         </div>
-        <div class="form-field">{{ form.pronoun.label }} {{ form.pronoun }}
+        <div class="form-group">
+            {{ form.pronoun.label }} 
+            {{ form.pronoun(class="form-control") }}
             {% if form.pronoun.errors %}
                 {{ error_handle(form.pronoun) }}
             {% endif %}
         </div>
-        <div class="form-field">{{ form.country.label }} {{ form.country }}</div>
-        <div class="form-field">{{ form.teaching.label }}
+        <div class="form-group">
+            {{ form.country.label }} {{ form.country(class="form-control") }}
+        </div>
+        <div class="form-group">{{ form.teaching.label }}
             {% for option in form.teaching %}
-            <tr>
-                <td>{{ option.label }}</td> 
-                <td>{{ option }}</td>
-            </tr>
+            <div>
+                {{ option(class="form-check-input") }}
+                {{ option.label }}
+            </div>
             {% endfor %}
             {% if form.teaching.errors %}
                 {{ error_handle(form.teaching) }}
             {% endif %}
         </div>
-        <div class="form-field">{{ form.teaching_exp.label }} {{ form.teaching_exp }} 
-        {% if form.teaching_exp.errors %}
-            {{ error_handle(form.teaching_exp) }}
-        {% endif %}
-        </div>
-        <div class="form-field">{{ form.teaching_help.label }}
-            {% for option in form.teaching_help %}
-            <tr>
-                <td>{{ option.label }}</td> 
-                <td>{{ option }}</td>
-            </tr>
-            {% endfor %}
-        </div>
-        <div class="field-form">{{ form.help_type.label }} {{ form.help_type }}
-        {% if form.help_type.errors %}
-            {{ error_handle(form.help_type) }}
-        {% endif %}
-        </div>
-        <div class="field-form">{{ form.help_freq.label }} {{ form.help_freq }}
-            {% if form.help_freq.errors %}
-                {{ error_handle(form.help_freq) }}
+        <div class="form-check">
+            {{ form.teaching_exp.label }} {{ form.teaching_exp(class="form-control") }} 
+            {% if form.teaching_exp.errors %}
+                {{ error_handle(form.teaching_exp) }}
             {% endif %}
+        </div>
+        <div class="form-check">
+            {{ form.teaching_help.label }}
+            {% for option in form.teaching %}
+            <div>
+                {{ option(class="form-check-input") }}
+                {{ option.label }}
             </div>
-        <div class="field-form">
-            {% for key, value in subjects.items() %}
-                {{ value }}
-                {{ form | attr(key)() }}
             {% endfor %}
         </div>
-        <div class="field_form">{{ form.other_subjects.label }}{{ form.other_subjects }}
-        {% if form.other_subjects.errors %}
-            {{ error_handle(form.other_subjects) }}
-        {% endif %}
-        <div class="field_form">{{ form.enrichment.label }}{{ form.enrichment }}
-        {% if form.enrichment.errors %}
-            {{ error_handle(form.enrichment) }}
-        {% endif %}            
+        <div class="form-check">
+            {{ form.help_type.label }} {{ form.help_type }}
+            {% if form.help_type.errors %}
+                {{ error_handle(form.help_type) }}
+            {% endif %}
+        </div>
+        <div class="form-check">
+            {{ form.help_freq.label }} {{ form.help_freq }}
+                {% if form.help_freq.errors %}
+                    {{ error_handle(form.help_freq) }}
+                {% endif %}
+        </div>
+        <div class="form-check form-check-inline">
+            {% for key, value in subjects.items() %}
+                {{ value }} {{ form | attr(key)(class='form-control') }}
+            {% endfor %}
+        </div>
+        <div class="field_group">
+            {{ form.other_subjects.label }}{{ form.other_subjects }}
+            {% if form.other_subjects.errors %}
+                {{ error_handle(form.other_subjects) }}
+            {% endif %}
+        <div class="field_group">
+            {{ form.enrichment.label }}{{ form.enrichment }}
+            {% if form.enrichment.errors %}
+                {{ error_handle(form.enrichment) }}
+            {% endif %}            
         </div>
         {% for field in form %}
             {% if field.type == 'BooleanField' %}
@@ -86,6 +91,13 @@
                 </div>
             {% endif %}
         {% endfor %}
+        </ul>
+        {{ form.recaptcha }}
+        {% for error in form.recaptcha.errors %}
+        <ul>
+            <li style="color:red;">{{ error }}</li>
+        {% endfor %}
+        </ul>
         {{ form.submit }}
     </form>
 </div>
